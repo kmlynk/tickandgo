@@ -1,6 +1,6 @@
 package com.kmlynk.tickandgo.filters;
 
-import com.kmlynk.tickandgo.domain.User;
+import com.kmlynk.tickandgo.domain.entities.User;
 import com.kmlynk.tickandgo.repositories.UserRepository;
 import com.nimbusds.jwt.JWT;
 import jakarta.servlet.FilterChain;

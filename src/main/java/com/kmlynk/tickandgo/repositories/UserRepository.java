@@ -1,6 +1,6 @@
 package com.kmlynk.tickandgo.repositories;
 
-import com.kmlynk.tickandgo.domain.User;
+import com.kmlynk.tickandgo.domain.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

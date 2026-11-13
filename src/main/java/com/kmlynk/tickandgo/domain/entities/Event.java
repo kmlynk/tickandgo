@@ -1,4 +1,4 @@
-package com.kmlynk.tickandgo.domain;
+package com.kmlynk.tickandgo.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
