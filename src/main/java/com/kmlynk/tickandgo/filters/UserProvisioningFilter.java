@@ -42,6 +42,7 @@ public class UserProvisioningFilter extends OncePerRequestFilter {
                     user.setId(keycloakId);
                     user.setName(jwt.getClaimAsString("preferred_username"));
                     user.setEmail(jwt.getClaimAsString("email"));
+                    userRepository.save(user);
                 }
 
 
