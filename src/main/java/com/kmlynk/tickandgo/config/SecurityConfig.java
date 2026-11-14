@@ -3,6 +3,7 @@ package com.kmlynk.tickandgo.config;
 import com.kmlynk.tickandgo.filters.UserProvisioningFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,9 +17,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(
             HttpSecurity http,
             UserProvisioningFilter provisioningFilter) throws Exception {
-        http.authorizeHttpRequests(authorize ->
-                // Catch all rule
-                authorize.anyRequest().authenticated())
+        http.authorizeHttpRequests(authorize
+                        -> authorize.requestMatchers(HttpMethod.GET, "/api/v1/published-events").permitAll()
+                        // Catch all rule
+                        .anyRequest().authenticated())
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session
                         -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
