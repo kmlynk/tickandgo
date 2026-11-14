@@ -2,7 +2,6 @@ package com.kmlynk.tickandgo.filters;
 
 import com.kmlynk.tickandgo.domain.entities.User;
 import com.kmlynk.tickandgo.repositories.UserRepository;
-import com.nimbusds.jwt.JWT;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,11 +10,11 @@ import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.UUID;
 
 @Component
@@ -34,20 +33,18 @@ public class UserProvisioningFilter extends OncePerRequestFilter {
 
         if (authentication != null
                 && authentication.isAuthenticated()
-                && authentication.getPrincipal() instanceof JWT jwt) {
-            try {
-                UUID keycloakId = UUID.fromString(jwt.getJWTClaimsSet().getSubject());
+                && authentication.getPrincipal() instanceof Jwt jwt) {
+
+                UUID keycloakId = UUID.fromString(jwt.getSubject());
 
                 if (!userRepository.existsById(keycloakId)) {
                     User user = new User();
                     user.setId(keycloakId);
-                    user.setName(jwt.getJWTClaimsSet().getStringClaim("preferred_username"));
-                    user.setEmail(jwt.getJWTClaimsSet().getStringClaim("email"));
+                    user.setName(jwt.getClaimAsString("preferred_username"));
+                    user.setEmail(jwt.getClaimAsString("email"));
                 }
 
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
+
         }
 
         filterChain.doFilter(request, response);
