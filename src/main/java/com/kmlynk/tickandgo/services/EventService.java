@@ -6,7 +6,6 @@ import com.kmlynk.tickandgo.domain.entities.Event;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,5 +15,7 @@ public interface EventService {
     Page<Event> listEventsForOrganizer(UUID organizerId, Pageable pageable);
     Optional<Event> getEventForOrganizer(UUID organizerId, UUID id);
     Event updateEventForOrganizer(UUID organizerId, UUID id, UpdateEventRequest request);
+
+    void deleteEventForOrganizer(UUID organizerId, UUID id);
 
 }
