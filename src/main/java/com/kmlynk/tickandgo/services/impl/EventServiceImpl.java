@@ -4,6 +4,7 @@ import com.kmlynk.tickandgo.domain.CreateEventRequest;
 import com.kmlynk.tickandgo.domain.UpdateEventRequest;
 import com.kmlynk.tickandgo.domain.UpdateTicketTypeRequest;
 import com.kmlynk.tickandgo.domain.entities.Event;
+import com.kmlynk.tickandgo.domain.entities.EventStatusEnum;
 import com.kmlynk.tickandgo.domain.entities.TicketType;
 import com.kmlynk.tickandgo.domain.entities.User;
 import com.kmlynk.tickandgo.exceptions.EventNotFoundException;
@@ -138,6 +139,11 @@ public class EventServiceImpl implements EventService {
     @Transactional
     public void deleteEventForOrganizer(UUID organizerId, UUID id) {
         getEventForOrganizer(organizerId, id).ifPresent(eventRepository::delete);
+    }
+
+    @Override
+    public Page<Event> listPublishedEvents(Pageable pageable) {
+        return eventRepository.findByStatus(EventStatusEnum.PUBLISHED, pageable);
     }
 
 }
