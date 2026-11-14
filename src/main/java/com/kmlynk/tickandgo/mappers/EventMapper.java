@@ -2,10 +2,7 @@ package com.kmlynk.tickandgo.mappers;
 
 import com.kmlynk.tickandgo.domain.CreateEventRequest;
 import com.kmlynk.tickandgo.domain.CreateTicketTypeRequest;
-import com.kmlynk.tickandgo.domain.dtos.CreateEventRequestDto;
-import com.kmlynk.tickandgo.domain.dtos.CreateEventResponseDto;
-import com.kmlynk.tickandgo.domain.dtos.CreateTicketTypeRequestDto;
-import com.kmlynk.tickandgo.domain.dtos.CreateTicketTypeResponseDto;
+import com.kmlynk.tickandgo.domain.dtos.*;
 import com.kmlynk.tickandgo.domain.entities.Event;
 import com.kmlynk.tickandgo.domain.entities.TicketType;
 import org.mapstruct.Mapper;
@@ -22,4 +19,7 @@ public interface EventMapper {
 
     CreateTicketTypeResponseDto toDto(TicketType ticketType);
 
+    ListEventTicketTypeResponseDto toListEventTicketTypeDto(TicketType ticketType);
+
+    ListEventResponseDto toListEventResponseDto(Event event);
 }
