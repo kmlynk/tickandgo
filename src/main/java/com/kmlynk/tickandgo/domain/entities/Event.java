@@ -1,7 +1,10 @@
 package com.kmlynk.tickandgo.domain.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -56,7 +59,7 @@ public class Event {
     @ManyToMany(mappedBy = "staffingEvents")
     private List<User> staff = new ArrayList<>();
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TicketType> ticketTypes = new ArrayList<>();
 
     @CreatedDate
