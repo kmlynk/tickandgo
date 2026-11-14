@@ -1,10 +1,8 @@
 package com.kmlynk.tickandgo.controllers;
 
 import com.kmlynk.tickandgo.domain.CreateEventRequest;
-import com.kmlynk.tickandgo.domain.dtos.CreateEventRequestDto;
-import com.kmlynk.tickandgo.domain.dtos.CreateEventResponseDto;
-import com.kmlynk.tickandgo.domain.dtos.GetEventDetailsResponseDto;
-import com.kmlynk.tickandgo.domain.dtos.ListEventResponseDto;
+import com.kmlynk.tickandgo.domain.UpdateEventRequest;
+import com.kmlynk.tickandgo.domain.dtos.*;
 import com.kmlynk.tickandgo.domain.entities.Event;
 import com.kmlynk.tickandgo.mappers.EventMapper;
 import com.kmlynk.tickandgo.services.EventService;
@@ -63,6 +61,21 @@ public class EventController {
                 .map(eventMapper::toGetEventDetailsResponseDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping(path = "/{eventId}")
+    public ResponseEntity<UpdateEventResponseDto> updateEvent(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable UUID eventId,
+            @Valid @RequestBody UpdateEventRequestDto updateEventRequestDto
+    ) {
+        UpdateEventRequest updateEventRequest = eventMapper.fromUpdateEventRequestDto(updateEventRequestDto);
+        UUID userId = parseUserId(jwt);
+
+        Event updatedEvent = eventService.updateEventForOrganizer(userId, eventId, updateEventRequest);
+        UpdateEventResponseDto updateEventResponseDto = eventMapper.toUpdateEventResponseDto(updatedEvent);
+
+        return ResponseEntity.ok(updateEventResponseDto);
     }
 
     private UUID parseUserId(Jwt jwt) {
