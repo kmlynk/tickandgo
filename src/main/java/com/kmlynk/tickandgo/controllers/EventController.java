@@ -18,8 +18,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -35,11 +33,11 @@ public class EventController {
             @AuthenticationPrincipal Jwt jwt,
             @Valid @RequestBody CreateEventRequestDto createEventRequestDto
     ) {
-        CreateEventRequest createEventRequest = eventMapper.fromDto(createEventRequestDto);
+        CreateEventRequest createEventRequest = eventMapper.fromCreateEventRequestDto(createEventRequestDto);
         UUID userId = parseUserId(jwt);
 
         Event createdEvent = eventService.createEvent(userId, createEventRequest);
-        CreateEventResponseDto createEventResponseDto = eventMapper.toDto(createdEvent);
+        CreateEventResponseDto createEventResponseDto = eventMapper.toCreateEventResponseDto(createdEvent);
 
         return new ResponseEntity<>(createEventResponseDto, HttpStatus.CREATED);
     }

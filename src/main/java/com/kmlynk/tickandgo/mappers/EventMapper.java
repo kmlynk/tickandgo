@@ -2,6 +2,8 @@ package com.kmlynk.tickandgo.mappers;
 
 import com.kmlynk.tickandgo.domain.CreateEventRequest;
 import com.kmlynk.tickandgo.domain.CreateTicketTypeRequest;
+import com.kmlynk.tickandgo.domain.UpdateEventRequest;
+import com.kmlynk.tickandgo.domain.UpdateTicketTypeRequest;
 import com.kmlynk.tickandgo.domain.dtos.*;
 import com.kmlynk.tickandgo.domain.entities.Event;
 import com.kmlynk.tickandgo.domain.entities.TicketType;
@@ -11,14 +13,16 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface EventMapper {
 
-    CreateTicketTypeRequest fromDto(CreateTicketTypeRequestDto dto);
+    // Create
+    CreateTicketTypeRequest fromCreateTicketTypeRequestDto(CreateTicketTypeRequestDto dto);
 
-    CreateEventRequest fromDto(CreateEventRequestDto dto);
+    CreateEventRequest fromCreateEventRequestDto(CreateEventRequestDto dto);
 
-    CreateEventResponseDto toDto(Event event);
+    CreateTicketTypeResponseDto toCreateTicketTypeResponseDto(TicketType ticketType);
 
-    CreateTicketTypeResponseDto toDto(TicketType ticketType);
+    CreateEventResponseDto toCreateEventResponseDto(Event event);
 
+    // GET
     ListEventTicketTypeResponseDto toListEventTicketTypeDto(TicketType ticketType);
 
     ListEventResponseDto toListEventResponseDto(Event event);
@@ -27,4 +31,12 @@ public interface EventMapper {
 
     GetEventDetailsResponseDto toGetEventDetailsResponseDto(Event event);
 
+    // Update
+    UpdateTicketTypeRequest fromUpdateTicketTypeRequestDto(UpdateTicketTypeRequestDto dto);
+
+    UpdateEventRequest fromUpdateEventRequestDto(UpdateEventRequestDto dto);
+
+    UpdateTicketTypeResponseDto toUpdateTicketTypeResponseDto(TicketType ticketType);
+
+    UpdateEventResponseDto toUpdateEventResponseDto(Event event);
 }
