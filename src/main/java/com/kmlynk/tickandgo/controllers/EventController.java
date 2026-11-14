@@ -3,6 +3,7 @@ package com.kmlynk.tickandgo.controllers;
 import com.kmlynk.tickandgo.domain.CreateEventRequest;
 import com.kmlynk.tickandgo.domain.dtos.CreateEventRequestDto;
 import com.kmlynk.tickandgo.domain.dtos.CreateEventResponseDto;
+import com.kmlynk.tickandgo.domain.dtos.GetEventDetailsResponseDto;
 import com.kmlynk.tickandgo.domain.dtos.ListEventResponseDto;
 import com.kmlynk.tickandgo.domain.entities.Event;
 import com.kmlynk.tickandgo.mappers.EventMapper;
@@ -18,6 +19,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -49,8 +51,20 @@ public class EventController {
     ) {
         UUID userId = parseUserId(jwt);
         Page<Event> events = eventService.listEventsForOrganizer(userId, pageable);
-        return  ResponseEntity.ok(
+        return ResponseEntity.ok(
                 events.map(eventMapper::toListEventResponseDto));
+    }
+
+    @GetMapping(path = "/{eventId}")
+    public ResponseEntity<GetEventDetailsResponseDto> getEvent(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable UUID eventId
+    ) {
+        UUID userId = parseUserId(jwt);
+        return eventService.getEventForOrganizer(userId, eventId)
+                .map(eventMapper::toGetEventDetailsResponseDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     private UUID parseUserId(Jwt jwt) {
