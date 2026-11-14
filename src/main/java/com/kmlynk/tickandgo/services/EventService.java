@@ -2,11 +2,15 @@ package com.kmlynk.tickandgo.services;
 
 import com.kmlynk.tickandgo.domain.CreateEventRequest;
 import com.kmlynk.tickandgo.domain.entities.Event;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface EventService {
 
     Event createEvent(UUID organizerId, CreateEventRequest event);
+    Page<Event> listEventsForOrganizer(UUID organizerId, Pageable pageable);
 
 }
