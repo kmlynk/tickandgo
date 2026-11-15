@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
         log.error("Caught TicketNotFoundException", ex);
         ErrorDto errorDto = new ErrorDto();
         errorDto.setError("Ticket not found");
-        return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorDto, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(TicketSoldOutException.class)
@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
         log.error("Caught QrCodeNotFoundException", ex);
         ErrorDto errorDto = new ErrorDto();
         errorDto.setError("QR Code not found");
-        return new ResponseEntity<>(errorDto, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(errorDto, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(QrCodeGenerationException.class)
