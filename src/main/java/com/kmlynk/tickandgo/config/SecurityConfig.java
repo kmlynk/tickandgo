@@ -18,7 +18,7 @@ public class SecurityConfig {
             HttpSecurity http,
             UserProvisioningFilter provisioningFilter) throws Exception {
         http.authorizeHttpRequests(authorize
-                        -> authorize.requestMatchers(HttpMethod.GET, "/api/v1/published-events").permitAll()
+                        -> authorize.requestMatchers(HttpMethod.GET, "/api/v1/published-events/**").permitAll()
                         // Catch all rule
                         .anyRequest().authenticated())
                 .csrf(csrf -> csrf.disable())
