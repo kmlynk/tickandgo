@@ -4,7 +4,6 @@ import com.kmlynk.tickandgo.filters.UserProvisioningFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
@@ -16,7 +15,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(
             HttpSecurity http,
-            UserProvisioningFilter provisioningFilter) throws Exception {
+            UserProvisioningFilter provisioningFilter,
+            JwtAuthenticationConverter jwtAuthenticationConverter) throws Exception {
         http.authorizeHttpRequests(authorize
                         -> authorize.requestMatchers(HttpMethod.GET, "/api/v1/published-events/**").permitAll()
                         // Catch all rule
@@ -25,7 +25,7 @@ public class SecurityConfig {
                 .sessionManagement(session
                         -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(oauth2
-                        -> oauth2.jwt(Customizer.withDefaults()))
+                        -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)))
                 .addFilterAfter(provisioningFilter, BearerTokenAuthenticationFilter.class);
 
         return http.build();
